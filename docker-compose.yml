@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  catedra-api:
+    image: vallelabs/catedra-back:1.0.0
+    container_name: catedra-api
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    environment:
+      ACCESS_TOKEN_SECRET : 9e1hmKH3fj
+      DB_DATABASE : catedra
+      DB_HOST : host.docker.internal
+      DB_PASSWORD : Tumlab2022*
+      DB_PORT : 3306
+      DB_USER : root
+      REFRESH_TOKEN_SECRET : i26KiGDWg9
+    ports:
+      - "4013:3000"
+    networks:
+      - catedra-net
+  catedra-game:
+    image: vallelabs/catedra-game:1.2.0-tumlab
+    container_name: catedra-game
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    ports:
+      - "3007:80"
+    networks:
+      - catedra-net
+      
+networks:
+  catedra-net:
+    driver: bridge
